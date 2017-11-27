@@ -3,9 +3,9 @@
 
     <string name="network_error_message">Network error. Try again later.</string>
 
-    <string name="activity_week_forecasts">Week forecasts</string>
+    <string name="fragment_week_forecasts">Week forecasts</string>
 
-    <string name="activity_day_forecast">Day forecast</string>
+    <string name="fragment_day_forecast">Day forecast</string>
 
     <!-- Beaufort scale -->
     <string name="beaufort_level_0">Calm</string>

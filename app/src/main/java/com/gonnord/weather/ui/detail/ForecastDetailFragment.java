@@ -1,5 +1,6 @@
 package com.gonnord.weather.ui.detail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by pierre-antoinegonnord on 27/11/2017.
+ * Created by GONNORD_pierreantoine on 27/11/2017.
  */
 
 public class ForecastDetailFragment extends Fragment {
@@ -48,7 +49,7 @@ public class ForecastDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_forecast_detail, container, false);
+        return inflater.inflate(R.layout.fragment_forecast_detail, container, false);
     }
 
     @Override
@@ -60,5 +61,11 @@ public class ForecastDetailFragment extends Fragment {
         recycler.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.fragment_day_forecast));
     }
 }

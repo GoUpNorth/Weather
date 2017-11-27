@@ -1,5 +1,6 @@
 package com.gonnord.weather.ui.list;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +16,8 @@ import android.widget.Toast;
 
 import com.gonnord.weather.R;
 import com.gonnord.weather.model.data.Forecast;
-import com.gonnord.weather.ui.ForecastActivity;
+import com.gonnord.weather.ui.IFragmentManager;
+import com.gonnord.weather.ui.detail.ForecastDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by pierre-antoinegonnord on 27/11/2017.
+ * Created by GONNORD_pierreantoine on 27/11/2017.
  */
 
 public class ForecastListFragment extends Fragment implements IForecastsListContract.View {
@@ -43,6 +45,8 @@ public class ForecastListFragment extends Fragment implements IForecastsListCont
     ForecastsRecyclerAdapter adapter;
 
     IForecastsListContract.Presenter presenter;
+
+    IFragmentManager fragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,15 +96,28 @@ public class ForecastListFragment extends Fragment implements IForecastsListCont
     @Override
     public void onResume() {
         super.onResume();
-
         presenter.onViewActive(this);
+        getActivity().setTitle(getString(R.string.fragment_week_forecasts));
     }
 
     @Override
     public void onPause() {
         presenter.onViewInactive();
-
         super.onPause();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(getActivity() instanceof IFragmentManager) {
+            fragmentManager = (IFragmentManager) getActivity();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        fragmentManager = null;
+        super.onDetach();
     }
 
     @Override
@@ -136,7 +153,12 @@ public class ForecastListFragment extends Fragment implements IForecastsListCont
         public void onClick(ForecastsRecyclerAdapter.ViewHolder viewHolder) {
             Forecast forecast = forecasts.get(viewHolder.getAdapterPosition());
 
-            ((ForecastActivity)(ForecastListFragment.this.getActivity())).showForecastDetail(forecast);
+            Bundle args = new Bundle();
+            args.putSerializable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
+
+            if(fragmentManager != null) {
+                fragmentManager.displayFragment(ForecastDetailFragment.class, args, true);
+            }
         }
     }
 }

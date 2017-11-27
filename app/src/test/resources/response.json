@@ -1,0 +1,142 @@
+{
+  "city": {
+    "id": 2988507,
+    "name": "Paris",
+    "coord": {
+      "lon": 2.3488,
+      "lat": 48.8534
+    },
+    "country": "FR",
+    "population": 0
+  },
+  "cod": "200",
+  "message": 0.4047559,
+  "cnt": 5,
+  "list": [
+    {
+      "dt": 1511607600,
+      "temp": {
+        "day": 3.14,
+        "min": 2.11,
+        "max": 3.14,
+        "night": 2.11,
+        "eve": 3.14,
+        "morn": 3.14
+      },
+      "pressure": 1023.25,
+      "humidity": 93,
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10d"
+        }
+      ],
+      "speed": 3.61,
+      "deg": 275,
+      "clouds": 36,
+      "rain": 0.42
+    },
+    {
+      "dt": 1511694000,
+      "temp": {
+        "day": 6.54,
+        "min": 2.71,
+        "max": 6.54,
+        "night": 5.31,
+        "eve": 5.21,
+        "morn": 2.71
+      },
+      "pressure": 1028.05,
+      "humidity": 93,
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10d"
+        }
+      ],
+      "speed": 5.33,
+      "deg": 267,
+      "clouds": 20,
+      "rain": 2.44
+    },
+    {
+      "dt": 1511780400,
+      "temp": {
+        "day": 7,
+        "min": 4.78,
+        "max": 9.05,
+        "night": 9.05,
+        "eve": 8.55,
+        "morn": 4.78
+      },
+      "pressure": 1023.45,
+      "humidity": 96,
+      "weather": [
+        {
+          "id": 501,
+          "main": "Rain",
+          "description": "moderate rain",
+          "icon": "10d"
+        }
+      ],
+      "speed": 7.72,
+      "deg": 236,
+      "clouds": 88,
+      "rain": 9.4
+    },
+    {
+      "dt": 1511866800,
+      "temp": {
+        "day": 7.9,
+        "min": 2.74,
+        "max": 8.67,
+        "night": 2.74,
+        "eve": 5.67,
+        "morn": 8.57
+      },
+      "pressure": 1003.51,
+      "humidity": 100,
+      "weather": [
+        {
+          "id": 501,
+          "main": "Rain",
+          "description": "moderate rain",
+          "icon": "10d"
+        }
+      ],
+      "speed": 6.36,
+      "deg": 253,
+      "clouds": 92,
+      "rain": 5.71
+    },
+    {
+      "dt": 1511953200,
+      "temp": {
+        "day": 6.99,
+        "min": 3.7,
+        "max": 6.99,
+        "night": 3.7,
+        "eve": 4.69,
+        "morn": 5.03
+      },
+      "pressure": 999.99,
+      "humidity": 0,
+      "weather": [
+        {
+          "id": 501,
+          "main": "Rain",
+          "description": "moderate rain",
+          "icon": "10d"
+        }
+      ],
+      "speed": 4.69,
+      "deg": 308,
+      "clouds": 36,
+      "rain": 10.71
+    }
+  ]
+}

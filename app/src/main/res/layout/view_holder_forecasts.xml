@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="?attr/selectableItemBackground"
+    android:padding="10dp"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".6">
+
+        <TextView
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Date"
+            android:maxLines="1" />
+
+        <TextView
+            android:textSize="14sp"
+            android:id="@+id/weather_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Weather"
+            android:maxLines="1" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".4">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/weather_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/drawable_placeholder"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:gravity="center_vertical"
+            android:id="@+id/temp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:text="4,51°C"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+</LinearLayout>

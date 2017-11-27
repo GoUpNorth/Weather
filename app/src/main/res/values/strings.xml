@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Weather</string>
+
+    <string name="network_error_message">Network error. Try again later.</string>
+
+    <string name="activity_week_forecasts">Week forecasts</string>
+
+    <string name="activity_day_forecast">Day forecast</string>
+
+    <!-- Beaufort scale -->
+    <string name="beaufort_level_0">Calm</string>
+    <string name="beaufort_level_1">Light air</string>
+    <string name="beaufort_level_2">Light breeze</string>
+    <string name="beaufort_level_3">Gentle breeze</string>
+    <string name="beaufort_level_4">Moderate breeze</string>
+    <string name="beaufort_level_5">Fresh breeze</string>
+    <string name="beaufort_level_6">Strong breeze</string>
+    <string name="beaufort_level_7">High wind</string>
+    <string name="beaufort_level_8">Gale</string>
+    <string name="beaufort_level_9">Strong gale</string>
+    <string name="beaufort_level_10">Storm</string>
+    <string name="beaufort_level_11">Violent storm</string>
+    <string name="beaufort_level_12">Hurricane</string>
+
+    <string name="wind_orientation_n">N</string>
+    <string name="wind_orientation_nne">NNE</string>
+    <string name="wind_orientation_ne">NE</string>
+    <string name="wind_orientation_ene">ENE</string>
+    <string name="wind_orientation_e">E</string>
+    <string name="wind_orientation_ese">ESE</string>
+    <string name="wind_orientation_se">SE</string>
+    <string name="wind_orientation_sse">SSE</string>
+    <string name="wind_orientation_s">S</string>
+    <string name="wind_orientation_ssw">SSW</string>
+    <string name="wind_orientation_sw">SW</string>
+    <string name="wind_orientation_wsw">WSW</string>
+    <string name="wind_orientation_w">W</string>
+    <string name="wind_orientation_wnw">WNW</string>
+    <string name="wind_orientation_nw">NW</string>
+    <string name="wind_orientation_nnw">NNW</string>
+
+
+
+
+    <string name="detail_day_temp">Day:</string>
+    <string name="detail_night_temp">Night:</string>
+    <string name="detail_unit_celsius">°C</string>
+    <string name="detail_unit_percent">%</string>
+    <string name="detail_unit_hpascal">hPa</string>
+    <string name="detail_unit_m_second">m/s</string>
+
+    <string name="detail_details_cat">Details:</string>
+    <string name="detail_details_humidity">Humidity</string>
+    <string name="detail_details_pressure">Pressure</string>
+    <string name="detail_details_cloudiness">Cloudiness</string>
+
+    <string name="detail_temp_cat">Temperatures:</string>
+    <string name="detail_temp_min">Min.</string>
+    <string name="detail_temp_max">Max.</string>
+
+    <string name="detail_wind_cat">Wind:</string>
+    <string name="detail_wind_speed">Speed</string>
+    <string name="detail_wind_orientation">Orientation</string>
+
+    <string name="no_forecast_to_display_message">No weather forecast found</string>
+</resources>

@@ -31,8 +31,7 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
 
     @Override
     public void getWeekForecast(final Context context) {
-
-        view.showProgressBar();
+        showProgressBar(true);
 
         if(provider != null) {
             provider.getWeatherForecasts(context, new ForecastSource.ForecastRequestCallback() {
@@ -42,7 +41,7 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                         @Override
                         public void run() {
                             view.displayForecasts(response.getForecasts());
-                            view.hideProgressBar();
+                            showProgressBar(false);
                         }
                     });
                 }
@@ -53,7 +52,7 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                         @Override
                         public void run() {
                             view.showError(throwable.getMessage());
-                            view.hideProgressBar();
+                            showProgressBar(false);
                         }
                     });
                 }
@@ -64,11 +63,24 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                         @Override
                         public void run() {
                             view.showError(context.getResources().getString(R.string.network_error_message));
-                            view.hideProgressBar();
+                            showProgressBar(false);
                         }
                     });
                 }
             });
         }
+    }
+
+    private void showProgressBar(final boolean show) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(show) {
+                    view.showProgressBar();
+                } else {
+                    view.hideProgressBar();
+                }
+            }
+        });
     }
 }

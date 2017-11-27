@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gonnord.weather.ui.ForecastActivity">
+    tools:context="com.gonnord.weather.ui.ForecastActivity"
+    android:id="@+id/parentPanel">
 
     <FrameLayout
         android:id="@+id/fragmentContainer"

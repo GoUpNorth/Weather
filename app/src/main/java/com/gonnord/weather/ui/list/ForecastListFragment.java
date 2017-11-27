@@ -1,13 +1,12 @@
 package com.gonnord.weather.ui.list;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,8 @@ import android.widget.Toast;
 
 import com.gonnord.weather.R;
 import com.gonnord.weather.model.data.Forecast;
-import com.gonnord.weather.ui.IFragmentManager;
+import com.gonnord.weather.ui.BaseFragment;
+import com.gonnord.weather.ui.IBaseFragment;
 import com.gonnord.weather.ui.detail.ForecastDetailFragment;
 
 import java.util.ArrayList;
@@ -29,7 +29,9 @@ import butterknife.ButterKnife;
  * Created by GONNORD_pierreantoine on 27/11/2017.
  */
 
-public class ForecastListFragment extends Fragment implements IForecastsListContract.View {
+public class ForecastListFragment extends BaseFragment implements IForecastsListContract.View, IBaseFragment {
+
+    public static final String TAG = ForecastListFragment.class.getSimpleName();
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -45,8 +47,6 @@ public class ForecastListFragment extends Fragment implements IForecastsListCont
     ForecastsRecyclerAdapter adapter;
 
     IForecastsListContract.Presenter presenter;
-
-    IFragmentManager fragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,19 +106,10 @@ public class ForecastListFragment extends Fragment implements IForecastsListCont
         super.onPause();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(getActivity() instanceof IFragmentManager) {
-            fragmentManager = (IFragmentManager) getActivity();
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        fragmentManager = null;
-        super.onDetach();
-    }
+    /**
+     * IForecastsListContract.View implementation
+     */
 
     @Override
     public void displayForecasts(List<Forecast> list) {
@@ -147,6 +138,7 @@ public class ForecastListFragment extends Fragment implements IForecastsListCont
         presenter.getWeekForecast(getContext());
     }
 
+
     private class ClickHandler implements ForecastsRecyclerAdapter.ViewHolder.IViewHolderClickHandler {
 
         @Override
@@ -159,6 +151,17 @@ public class ForecastListFragment extends Fragment implements IForecastsListCont
             if(fragmentManager != null) {
                 fragmentManager.displayFragment(ForecastDetailFragment.class, args, true);
             }
+        }
+    }
+
+    /**
+     * IBaseFragment Implementation
+     */
+    @Override
+    public void onNetworkBack() {
+        if (this.forecasts.size() == 0) {
+            Log.i(TAG, "Refresh after network loss");
+            refreshForecasts();
         }
     }
 }

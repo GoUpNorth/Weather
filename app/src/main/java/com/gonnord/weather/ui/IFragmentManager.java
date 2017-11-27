@@ -11,4 +11,7 @@ public interface IFragmentManager {
 
     <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack);
 
+    void onAttachFragment(Fragment fragment);
+
+    void onDetachFragment();
 }

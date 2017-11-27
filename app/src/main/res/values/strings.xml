@@ -39,9 +39,6 @@
     <string name="wind_orientation_nw">NW</string>
     <string name="wind_orientation_nnw">NNW</string>
 
-
-
-
     <string name="detail_day_temp">Day:</string>
     <string name="detail_night_temp">Night:</string>
     <string name="detail_unit_celsius">°C</string>
@@ -63,4 +60,6 @@
     <string name="detail_wind_orientation">Orientation</string>
 
     <string name="no_forecast_to_display_message">No weather forecast found</string>
+
+    <string name="snackbar_hide_action">Hide</string>
 </resources>

@@ -22,19 +22,22 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
     // To execute callbacks on the UI thread
     private Handler handler;
 
+    private boolean responsePending;
+
     public ForecastListPresenter(IForecastsListContract.View view) {
         this.view = view;
         provider = new ForecastProvider();
         handler = new Handler();
+        responsePending = false;
     }
 
 
     @Override
-    public void getWeekForecast(final Context context) {
+    public void getForecast(final Context context, int count) {
         showProgressBar(true);
 
-        if(provider != null) {
-            provider.getWeatherForecasts(context, new ForecastSource.ForecastRequestCallback() {
+        if(provider != null && !responsePending) {
+            provider.getWeatherForecasts(context, count, new ForecastSource.ForecastRequestCallback() {
                 @Override
                 public void onSuccess(final Response response) {
                     handler.post(new Runnable() {
@@ -42,6 +45,7 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                         public void run() {
                             view.displayForecasts(response.getForecasts());
                             showProgressBar(false);
+                            responsePending = false;
                         }
                     });
                 }
@@ -53,6 +57,7 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                         public void run() {
                             view.showError(throwable.getMessage());
                             showProgressBar(false);
+                            responsePending = false;
                         }
                     });
                 }
@@ -64,10 +69,12 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                         public void run() {
                             view.showError(context.getResources().getString(R.string.network_error_message));
                             showProgressBar(false);
+                            responsePending = false;
                         }
                     });
                 }
             });
+            responsePending = true;
         }
     }
 
@@ -75,11 +82,7 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(show) {
-                    view.showProgressBar();
-                } else {
-                    view.hideProgressBar();
-                }
+                view.showProgressBar(show);
             }
         });
     }

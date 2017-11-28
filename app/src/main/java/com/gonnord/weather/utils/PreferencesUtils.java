@@ -3,6 +3,7 @@ package com.gonnord.weather.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 /**
@@ -13,29 +14,23 @@ public class PreferencesUtils {
 
     private static final String PREFERENCE_UNIT_SYSTEM = "PREFERENCE_UNIT_SYSTEM";
 
-    private static final String PREFERENCE_FORECAST_COUNT_REQUEST = "PREFERENCE_FORECAST_COUNT_REQUEST";
-
-
-    public enum UnitSystem {
-        METRIC,
-        IMPERIAL
-    }
-
-    public static UnitSystem getUnitSystem(Context context) {
+    public static MeasurementSystem getMeasurementSystem(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String pref = prefs.getString(PREFERENCE_UNIT_SYSTEM, UnitSystem.METRIC.toString());
-        UnitSystem unit;
+        String pref = prefs.getString(PREFERENCE_UNIT_SYSTEM, MeasurementSystem.METRIC.toString());
+        MeasurementSystem unit;
         try {
-            unit = UnitSystem.valueOf(pref);
+            unit = MeasurementSystem.valueOf(pref);
         } catch (IllegalArgumentException e) {
             Log.e(PreferencesUtils.class.getSimpleName(), e.getMessage(), e);
-            unit = UnitSystem.METRIC;
+            unit = MeasurementSystem.METRIC;
         }
         return unit;
     }
 
-    public static int getForecastCount(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getInt(PREFERENCE_FORECAST_COUNT_REQUEST, 5);
+    public static void setMeasurementSystem(Context context, @NonNull MeasurementSystem system) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString(PREFERENCE_UNIT_SYSTEM, system.toString());
+        editor.apply();
+        Log.i(PreferencesUtils.class.getSimpleName(), "Measurement system pref updated:" + system.toString());
     }
 }

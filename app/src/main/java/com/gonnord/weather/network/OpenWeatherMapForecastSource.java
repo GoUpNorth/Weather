@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.gonnord.weather.model.ForecastSource;
+import com.gonnord.weather.utils.MeasurementSystem;
+import com.gonnord.weather.utils.PreferencesUtils;
 import com.gonnord.weather.utils.Properties;
 import com.gonnord.weather.utils.StringUtils;
 import com.google.gson.Gson;
@@ -27,7 +29,7 @@ public class OpenWeatherMapForecastSource extends ForecastSource {
 
     private static final String TAG = OpenWeatherMapForecastSource.class.getSimpleName();
 
-    private static final String OPEN_WEATHER_ENTRY_POINT = "https://api.openweathermap.org/data/2.5/forecast/daily?q=Paris&units=metric&cnt=5&appid=";
+    private static final String OPEN_WEATHER_ENTRY_POINT = "https://api.openweathermap.org/data/2.5/forecast/daily?q=Paris&units=%s&cnt=%d&appid=";
 
     private static final String REQUEST_TAG = "REQUEST_TAG";
 
@@ -47,9 +49,14 @@ public class OpenWeatherMapForecastSource extends ForecastSource {
     }
 
     @Override
-    public void getWeatherForecast(final ForecastRequestCallback callback, Context context) {
+    public void getWeatherForecast(final ForecastRequestCallback callback, Context context, int count) {
+        if(count < 1) {
+            count = Properties.DEFAULT_REQUESTED_FORECASTS_COUNT;
+        }
 
-        String url = OPEN_WEATHER_ENTRY_POINT.concat(Properties.OPEN_WEATHER_APP_ID);
+        MeasurementSystem unit = PreferencesUtils.getMeasurementSystem(context);
+
+        String url = String.format(OPEN_WEATHER_ENTRY_POINT, unit.getCode(), count).concat(Properties.OPEN_WEATHER_APP_ID);
 
         final Request httpRequest = new Request.Builder()
                 .url(url)

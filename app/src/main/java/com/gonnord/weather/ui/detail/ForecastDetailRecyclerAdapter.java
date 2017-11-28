@@ -23,6 +23,8 @@ import com.gonnord.weather.model.data.Forecast;
 import com.gonnord.weather.ui.view.SpeedView;
 import com.gonnord.weather.ui.view.TemperatureView;
 import com.gonnord.weather.utils.DateUtils;
+import com.gonnord.weather.utils.MeasurementSystem;
+import com.gonnord.weather.utils.PreferencesUtils;
 import com.gonnord.weather.utils.Properties;
 import com.gonnord.weather.utils.WindUtils;
 
@@ -63,6 +65,8 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        MeasurementSystem system = PreferencesUtils.getMeasurementSystem(fragment.getContext());
+
         // weather icon
         String iconUrl = String.format(Properties.WEATHER_ICONS_URL, forecast.getWeathers().get(0).getIconId());
         RequestOptions options = new RequestOptions().error(R.drawable.ic_error_black_24dp);
@@ -78,9 +82,11 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
 
         // Day temp
         holder.dayTemp.setValue(String.valueOf(forecast.getTemperature().getDayTemp()));
+        holder.dayTemp.setUnit(system);
 
         // Night temp
         holder.nightTemp.setValue(String.valueOf(forecast.getTemperature().getNightTemp()));
+        holder.nightTemp.setUnit(system);
 
         // Humidity
         holder.humidity.setText(String.valueOf(forecast.getHumidity()));
@@ -96,9 +102,11 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
 
         // Max temp
         holder.tempMax.setValue(String.valueOf(forecast.getTemperature().getMaxTemp()));
+        holder.tempMax.setUnit(system);
 
         // Min temp
         holder.tempMin.setValue(String.valueOf(forecast.getTemperature().getMinTemp()));
+        holder.tempMin.setUnit(system);
 
         // Wind status
         String windStatus = WindUtils.getWindDescriptionBySpeed(fragment.getContext(), forecast.getSpeed());
@@ -106,6 +114,7 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
 
         // Wind speed
         holder.windSpeed.setValue(String.valueOf(forecast.getSpeed()));
+        holder.windSpeed.setUnit(system);
 
         // Wind orientation
         String windOrientation = WindUtils.getWindOrientationByDegree(fragment.getContext(), forecast.getDeg());
@@ -114,7 +123,11 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
 
     @Override
     public int getItemCount() {
-        return 1;
+        if(forecast != null) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -206,5 +219,10 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
             }
         });
         tempChart.invalidate();
+    }
+
+    public void add(Forecast forecast) {
+        this.forecast = forecast;
+        notifyDataSetChanged();
     }
 }

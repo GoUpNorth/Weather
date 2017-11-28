@@ -2,6 +2,7 @@ package com.gonnord.weather.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -21,19 +22,25 @@ public class FragmentManagerActivity extends AppCompatActivity implements IFragm
      */
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
+    public void onFragmentStarted(Fragment fragment) {
         if(fragment instanceof IBaseFragment) {
             this.fragment = (IBaseFragment) fragment;
         }
     }
 
     @Override
-    public void onDetachFragment() {
-        this.fragment = null;
+    public <T extends Fragment> void onFragmentStopped(Class<T> stoppedFragmentClass) {
+        if(this.fragment != null && this.fragment.getClass().equals(stoppedFragmentClass)) {
+            this.fragment = null;
+        }
     }
 
     @Override
-    public <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack) {
+    public <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack, boolean popBackStack) {
+        if(popBackStack) {
+            popBackStack();
+        }
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(
                 fragmentClass.getClass().getSimpleName());
@@ -52,8 +59,15 @@ public class FragmentManagerActivity extends AppCompatActivity implements IFragm
         }
         fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment,
+        fragmentTransaction.replace(R.id.fragment_container, fragment,
                 ForecastListFragment.class.getSimpleName());
         fragmentTransaction.commit();
+    }
+
+    private void popBackStack() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        for(int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+            fragmentManager.popBackStack();
+        }
     }
 }

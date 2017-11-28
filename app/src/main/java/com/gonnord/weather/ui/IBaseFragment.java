@@ -7,4 +7,8 @@ package com.gonnord.weather.ui;
 public interface IBaseFragment {
 
     void onNetworkRecover();
+
+    void refreshForecast();
+
+    void clearForecast();
 }

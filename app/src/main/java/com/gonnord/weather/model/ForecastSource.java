@@ -18,7 +18,7 @@ public abstract class ForecastSource {
         void onNetworkFailure();
     }
 
-    public abstract void getWeatherForecast(ForecastRequestCallback callback, Context context);
+    public abstract void getWeatherForecast(ForecastRequestCallback callback, Context context, int count);
 
     public abstract void cancelForecastRequests();
 }

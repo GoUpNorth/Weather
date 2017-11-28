@@ -33,7 +33,6 @@ public class BaseActivity extends FragmentManagerActivity implements Observer {
 
     Snackbar snackbar;
 
-    // TODO add a menu
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,19 +128,19 @@ public class BaseActivity extends FragmentManagerActivity implements Observer {
                     return;
                 }
                 // TODO Use an externalized string
-                displaySnackbar("No internet connection", getString(R.string.snackbar_hide_action), Snackbar.LENGTH_INDEFINITE, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                });
+                displaySnackbar("No internet connection", getString(R.string.snackbar_hide_action), Snackbar.LENGTH_INDEFINITE);
             }
             runnableStarted = false;
         }
     };
 
-    protected void displaySnackbar(String text, String action, int length, View.OnClickListener listener) {
+    protected void displaySnackbar(String text, String action, int length) {
         snackbar = Snackbar.make(getParentView(), text, length);
-        snackbar.setAction(action, listener);
+        snackbar.setAction(action, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             snackbar.setActionTextColor(BaseActivity.this.getResources().getColor(R.color.colorAccent));
         } else {
@@ -153,7 +152,7 @@ public class BaseActivity extends FragmentManagerActivity implements Observer {
 
     protected View getParentView() {
         if(this.parentView == null) {
-            parentView = findViewById(R.id.parentPanel);
+            parentView = findViewById(R.id.fragment_container);
         }
         return parentView;
     }
@@ -178,7 +177,9 @@ public class BaseActivity extends FragmentManagerActivity implements Observer {
                 if(handler != null) {
                     removeCallbacks();
                 }
-                this.fragment.onNetworkRecover();
+                if(this.fragment != null) {
+                    this.fragment.onNetworkRecover();
+                }
             }
         }
     }

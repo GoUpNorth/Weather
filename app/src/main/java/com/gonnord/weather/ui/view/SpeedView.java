@@ -8,7 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 
 import com.gonnord.weather.R;
-import com.gonnord.weather.utils.PreferencesUtils;
+import com.gonnord.weather.utils.MeasurementSystem;
 
 /**
  * Created by GONNORD_pierreantoine on 28/11/2017.
@@ -34,11 +34,12 @@ public class SpeedView extends MetricView {
     }
 
     @Override
-    public void setUnit(@NonNull PreferencesUtils.UnitSystem tempUnit) {
-        if(tempUnit == PreferencesUtils.UnitSystem.METRIC) {
-            unit.setText(this.getContext().getString(R.string.detail_unit_meter_second));
+    public void setUnit(@NonNull MeasurementSystem tempUnit) {
+        this.unit = tempUnit;
+        if(tempUnit == MeasurementSystem.METRIC) {
+            unitView.setText(this.getContext().getString(R.string.detail_unit_meter_second));
         } else {
-            unit.setText(this.getContext().getString(R.string.detail_unit_miles_hour));
+            unitView.setText(this.getContext().getString(R.string.detail_unit_miles_hour));
         }
     }
 }

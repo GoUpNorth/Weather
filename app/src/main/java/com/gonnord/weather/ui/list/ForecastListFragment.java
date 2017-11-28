@@ -18,6 +18,9 @@ import com.gonnord.weather.model.data.Forecast;
 import com.gonnord.weather.ui.BaseFragment;
 import com.gonnord.weather.ui.IBaseFragment;
 import com.gonnord.weather.ui.detail.ForecastDetailFragment;
+import com.gonnord.weather.utils.MeasurementSystem;
+import com.gonnord.weather.utils.PreferencesUtils;
+import com.gonnord.weather.utils.Properties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,15 @@ import butterknife.ButterKnife;
 public class ForecastListFragment extends BaseFragment implements IForecastsListContract.View, IBaseFragment {
 
     public static final String TAG = ForecastListFragment.class.getSimpleName();
+
+    public static final String FORECASTS_COUNT_EXTRA = "FORECASTS_COUNT_EXTRA";
+
+    /**
+     * Since the ForecastListFragment is put in the back stack, the forecasts data are saved and reinstated when
+     * the fragment is popped out of the stack.
+     * If the measurement system was changed, the data are invalid and need to be queried.
+     */
+    public static final String LAST_MEASURUMENT_SYSTEM_USED = "LAST_MEASURUMENT_SYSTEM_USED";
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -48,6 +60,10 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
 
     IForecastsListContract.Presenter presenter;
 
+    private int requestForecastsCount = -1;
+
+    private MeasurementSystem system;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +71,10 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         forecasts = new ArrayList<>();
         adapter = new ForecastsRecyclerAdapter(forecasts, this, new ClickHandler());
         presenter = new ForecastListPresenter(this);
+
+        if(this.getArguments() != null) {
+            this.setRequestForecastsCount(getArguments().getInt(FORECASTS_COUNT_EXTRA, Properties.DEFAULT_REQUESTED_FORECASTS_COUNT));
+        }
     }
 
     @Nullable
@@ -70,6 +90,8 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getActivity().setTitle(getString(R.string.fragment_week_forecasts));
+
         ButterKnife.bind(this, view);
 
         recycler.addItemDecoration(new DividerItemDecoration(this.getContext(),
@@ -82,14 +104,13 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshForecasts();
+                refreshForecast();
             }
         });
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary);
 
-        if(forecasts.size() == 0) {
-            emptyListMessage.setVisibility(View.VISIBLE);
-            refreshForecasts();
+        if(forecasts.size() == 0 || checkMeasurementSystemHasChanged()) {
+            refreshForecast();
         }
     }
 
@@ -97,7 +118,6 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
     public void onResume() {
         super.onResume();
         presenter.onViewActive(this);
-        getActivity().setTitle(getString(R.string.fragment_week_forecasts));
     }
 
     @Override
@@ -106,6 +126,44 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         super.onPause();
     }
 
+
+    @Override
+    public void onDestroyView() {
+        this.system = PreferencesUtils.getMeasurementSystem(getContext());
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(LAST_MEASURUMENT_SYSTEM_USED, system.toString());
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        MeasurementSystem currentSystem = PreferencesUtils.getMeasurementSystem(getContext());
+
+        if(savedInstanceState != null) {
+            system = MeasurementSystem.valueOf(savedInstanceState.getString(LAST_MEASURUMENT_SYSTEM_USED, currentSystem.toString()));
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        this.presenter = null;
+        this.adapter = null;
+        super.onDestroy();
+    }
+
+    /**
+     * Checks if the measurement system has been changed since the last time the fragment was put in the back stack.
+     * @return true if the system has changed, false otherwise
+     */
+    private boolean checkMeasurementSystemHasChanged() {
+        MeasurementSystem currentSystem = PreferencesUtils.getMeasurementSystem(getContext());
+         return !this.system.equals(currentSystem);
+    }
 
     /**
      * IForecastsListContract.View implementation
@@ -116,27 +174,27 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         adapter.clear();
         adapter.addAll(list);
         emptyListMessage.setVisibility(View.GONE);
+        system = PreferencesUtils.getMeasurementSystem(getContext());
     }
+
 
     @Override
     public void showError(String message) {
+        if(this.forecasts.size() == 0) {
+            emptyListMessage.setVisibility(View.VISIBLE);
+        }
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void showProgressBar() {
-        this.swipeRefreshLayout.setRefreshing(true);
-    }
 
     @Override
-    public void hideProgressBar() {
-        this.swipeRefreshLayout.setRefreshing(false);
+    public void showProgressBar(boolean show) {
+        this.swipeRefreshLayout.setRefreshing(show);
     }
 
-
-    private void refreshForecasts() {
-        presenter.getWeekForecast(getContext());
-    }
+    /**
+     * End IForecastsListContract.View implementation
+     */
 
 
     private class ClickHandler implements ForecastsRecyclerAdapter.ViewHolder.IViewHolderClickHandler {
@@ -149,7 +207,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
             args.putSerializable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
 
             if(fragmentManager != null) {
-                fragmentManager.displayFragment(ForecastDetailFragment.class, args, true);
+                fragmentManager.displayFragment(ForecastDetailFragment.class, args, true, false);
             }
         }
     }
@@ -157,11 +215,35 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
     /**
      * IBaseFragment Implementation
      */
+
     @Override
     public void onNetworkRecover() {
-        if (this.forecasts.size() == 0) {
+        if (this.forecasts.size() == 0 || checkMeasurementSystemHasChanged()) {
             Log.i(TAG, "Refresh after network loss");
-            refreshForecasts();
+            refreshForecast();
         }
+    }
+
+    @Override
+    public void refreshForecast() {
+        int count = this.requestForecastsCount;
+        if(count < 0) {
+            count = Properties.DEFAULT_REQUESTED_FORECASTS_COUNT;
+        }
+        presenter.getForecast(getContext(), count);
+        Log.i(TAG, "Refreshing forecast");
+    }
+
+    @Override
+    public void clearForecast() {
+        forecasts = null;
+    }
+
+    /**
+     * End IBaseFragment implementation
+     */
+
+    public void setRequestForecastsCount(int value) {
+        this.requestForecastsCount = value;
     }
 }

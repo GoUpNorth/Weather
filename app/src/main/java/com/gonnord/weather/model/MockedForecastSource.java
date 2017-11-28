@@ -29,7 +29,7 @@ public class MockedForecastSource extends ForecastSource {
     private LoadMockedResponse task;
 
     @Override
-    public void getWeatherForecast(final ForecastRequestCallback callback, final Context context) {
+    public void getWeatherForecast(final ForecastRequestCallback callback, final Context context, int count) {
 
         if(!isTaskRunningOrPending()) {
             task = new LoadMockedResponse(context, callback);

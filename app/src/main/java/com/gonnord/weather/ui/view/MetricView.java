@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gonnord.weather.R;
-import com.gonnord.weather.utils.PreferencesUtils;
+import com.gonnord.weather.utils.MeasurementSystem;
 
 /**
  * Created by GONNORD_pierreantoine on 28/11/2017.
@@ -28,9 +28,13 @@ public abstract class MetricView extends LinearLayout {
 
     private static int defaultTextColor = Color.BLACK;
 
-    protected TextView value;
+    private static MeasurementSystem defaultUnit = MeasurementSystem.METRIC;
 
-    protected TextView unit;
+    protected TextView valueView;
+
+    protected TextView unitView;
+
+    protected MeasurementSystem unit;
 
     public MetricView(Context context) {
         super(context);
@@ -57,20 +61,20 @@ public abstract class MetricView extends LinearLayout {
     private void initView(Context context, AttributeSet attrs) {
         this.setOrientation(HORIZONTAL);
 
-        this.value = new TextView(context);
-        this.unit = new TextView(context);
+        this.valueView = new TextView(context);
+        this.unitView = new TextView(context);
 
-        this.value.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        this.value.setGravity(Gravity.CENTER_VERTICAL);
-        this.value.setMaxLines(1);
+        this.valueView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        this.valueView.setGravity(Gravity.CENTER_VERTICAL);
+        this.valueView.setMaxLines(1);
 
-        this.unit.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        this.unit.setGravity(Gravity.CENTER_VERTICAL);
-        this.unit.setMaxLines(1);
+        this.unitView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        this.unitView.setGravity(Gravity.CENTER_VERTICAL);
+        this.unitView.setMaxLines(1);
 
-        this.unit.setPadding(15, 0, 0, 0);
+        this.unitView.setPadding(5, 0, 0, 0);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.unit.setPaddingRelative(15, 0, 0, 0);
+            this.unitView.setPaddingRelative(5, 0, 0, 0);
         }
 
         float defaultSize = defaultTextSize * context.getResources().getDisplayMetrics().scaledDensity;
@@ -88,29 +92,34 @@ public abstract class MetricView extends LinearLayout {
         setTextSize(textSize);
         setTextColor(textColor);
 
-        PreferencesUtils.UnitSystem system = PreferencesUtils.UnitSystem.METRIC;
-        if (!this.isInEditMode()) {
-            system = PreferencesUtils.getUnitSystem(context);
-        }
+        MeasurementSystem system = defaultUnit;
         setUnit(system);
 
-        this.addView(this.value);
-        this.addView(this.unit);
+        this.addView(this.valueView);
+        this.addView(this.unitView);
     }
 
     public void setTextSize(float spValue) {
-        value.setTextSize(TypedValue.COMPLEX_UNIT_PX, spValue);
-        unit.setTextSize(TypedValue.COMPLEX_UNIT_PX, spValue);
+        valueView.setTextSize(TypedValue.COMPLEX_UNIT_PX, spValue);
+        unitView.setTextSize(TypedValue.COMPLEX_UNIT_PX, spValue);
     }
 
     public void setTextColor(int colorValue) {
-        value.setTextColor(colorValue);
-        unit.setTextColor(colorValue);
+        valueView.setTextColor(colorValue);
+        unitView.setTextColor(colorValue);
     }
 
-    public abstract void setUnit(@NonNull PreferencesUtils.UnitSystem tempUnit);
+    public abstract void setUnit(@NonNull MeasurementSystem tempUnit);
 
-    public void setValue(String value) {
-        this.value.setText(value);
+    public void setValue(String valueView) {
+        this.valueView.setText(valueView);
+    }
+
+    public MeasurementSystem getUnit() {
+        return unit;
+    }
+
+    public String getValue() {
+        return this.valueView.getText().toString();
     }
 }

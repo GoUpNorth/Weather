@@ -64,4 +64,18 @@
     <string name="no_forecast_to_display_message">No weather forecast found</string>
 
     <string name="snackbar_hide_action">Hide</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Navigation drawer titles -->
+    <string name="action_today_title">Today\'s forecast</string>
+    <string name="action_five_days_title">5 days forecast</string>
+    <string name="action_one_week_title">1 week forecast</string>
+    <string name="action_two_weeks_title">2 weeks forecast</string>
+    <string name="category_measure">System of measurement</string>
+    <string name="action_change_measure">Metric / Imperial</string>
+
+    <string name="snackbar_title_connectivity">No internet connection</string>
+
 </resources>

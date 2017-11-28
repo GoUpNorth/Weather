@@ -16,7 +16,7 @@ public class ForecastProvider {
         source = new ForecastProviderInjection().getSource();
     }
 
-    public void getWeatherForecasts(Context context, ForecastSource.ForecastRequestCallback callback) {
-        source.getWeatherForecast(callback, context);
+    public void getWeatherForecasts(Context context, int count, ForecastSource.ForecastRequestCallback callback) {
+        source.getWeatherForecast(callback, context, count);
     }
 }

@@ -15,6 +15,8 @@ import com.gonnord.weather.R;
 import com.gonnord.weather.model.data.Forecast;
 import com.gonnord.weather.ui.view.TemperatureView;
 import com.gonnord.weather.utils.DateUtils;
+import com.gonnord.weather.utils.MeasurementSystem;
+import com.gonnord.weather.utils.PreferencesUtils;
 import com.gonnord.weather.utils.Properties;
 
 import java.util.Date;
@@ -56,6 +58,7 @@ public class ForecastsRecyclerAdapter extends RecyclerView.Adapter<ForecastsRecy
 
     @Override
     public void onBindViewHolder(ForecastsRecyclerAdapter.ViewHolder holder, int position) {
+        MeasurementSystem system = PreferencesUtils.getMeasurementSystem(fragment.getContext());
         Forecast forecast = forecasts.get(position);
 
         String iconUrl = String.format(Properties.WEATHER_ICONS_URL, forecast.getWeathers().get(0).getIconId());
@@ -64,6 +67,7 @@ public class ForecastsRecyclerAdapter extends RecyclerView.Adapter<ForecastsRecy
 
         long roundedTemp = Math.round(forecast.getTemperature().getDayTemp());
         holder.temp.setValue(String.valueOf(roundedTemp));
+        holder.temp.setUnit(system);
         holder.weatherStatus.setText(forecast.getWeathers().get(0).getDescription());
 
         Date date = forecast.getDateObject();

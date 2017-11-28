@@ -9,9 +9,9 @@ import android.support.v4.app.Fragment;
 
 public interface IFragmentManager {
 
-    <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack);
+    <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack, boolean popBackStack);
 
-    void onAttachFragment(Fragment fragment);
+    void onFragmentStarted(Fragment fragment);
 
-    void onDetachFragment();
+    <T extends Fragment> void onFragmentStopped(Class<T> stoppedFragmentClass);
 }

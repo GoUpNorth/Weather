@@ -8,7 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 
 import com.gonnord.weather.R;
-import com.gonnord.weather.utils.PreferencesUtils.UnitSystem;
+import com.gonnord.weather.utils.MeasurementSystem;
 
 /**
  * Created by GONNORD_pierreantoine on 27/11/2017.
@@ -35,11 +35,12 @@ public class TemperatureView extends MetricView {
     }
 
     @Override
-    public void setUnit(@NonNull UnitSystem tempUnit) {
-        if(tempUnit == UnitSystem.METRIC) {
-            unit.setText(this.getContext().getString(R.string.detail_unit_celsius));
+    public void setUnit(@NonNull MeasurementSystem tempUnit) {
+        this.unit = tempUnit;
+        if(tempUnit == MeasurementSystem.METRIC) {
+            unitView.setText(this.getContext().getString(R.string.detail_unit_celsius));
         } else {
-            unit.setText(this.getContext().getString(R.string.detail_unit_fahrenheit));
+            unitView.setText(this.getContext().getString(R.string.detail_unit_fahrenheit));
         }
     }
 }

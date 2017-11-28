@@ -19,12 +19,10 @@ public interface IForecastsListContract {
 
         void showError(String message);
 
-        void showProgressBar();
-
-        void hideProgressBar();
+        void showProgressBar(boolean show);
     }
 
     interface Presenter extends IBasePresenter<View> {
-        void getWeekForecast(Context context);
+        void getForecast(Context context, int requestCount);
     }
 }

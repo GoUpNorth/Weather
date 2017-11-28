@@ -33,6 +33,8 @@ public class BaseActivity extends FragmentManagerActivity implements Observer {
 
     Snackbar snackbar;
 
+    // TODO add a menu
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +178,7 @@ public class BaseActivity extends FragmentManagerActivity implements Observer {
                 if(handler != null) {
                     removeCallbacks();
                 }
-                this.fragment.onNetworkBack();
+                this.fragment.onNetworkRecover();
             }
         }
     }

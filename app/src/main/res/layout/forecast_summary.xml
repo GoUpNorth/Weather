@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/summary"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -42,19 +43,11 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp" />
 
-                <TextView
+                <com.gonnord.weather.ui.view.TemperatureView
                     android:id="@+id/day_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
-                    android:textColor="@android:color/black"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/detail_unit_celsius"
-                    android:textColor="@android:color/black"/>
-
+                    app:textColor="@android:color/black"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -74,18 +67,11 @@
                     android:text="@string/detail_night_temp"
                     android:textColor="@android:color/black" />
 
-                <TextView
+                <com.gonnord.weather.ui.view.TemperatureView
                     android:id="@+id/night_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4,13"
-                    android:textColor="@android:color/black"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/detail_unit_celsius"
-                    android:textColor="@android:color/black"/>
+                    app:textColor="@android:color/black"/>
 
             </LinearLayout>
 
@@ -94,8 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="light rain"
-                android:textSize="30sp"
-                />
+                android:textSize="30sp" />
         </LinearLayout>
 
         <ImageView
@@ -106,7 +91,6 @@
             android:src="@drawable/icon"
             android:layout_alignParentRight="true"
             android:adjustViewBounds="true" />
-
     </RelativeLayout>
 </LinearLayout>
 

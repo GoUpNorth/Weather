@@ -13,12 +13,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.gonnord.weather.R;
 import com.gonnord.weather.model.data.Forecast;
+import com.gonnord.weather.ui.view.TemperatureView;
 import com.gonnord.weather.utils.DateUtils;
 import com.gonnord.weather.utils.Properties;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,7 +63,7 @@ public class ForecastsRecyclerAdapter extends RecyclerView.Adapter<ForecastsRecy
         Glide.with(fragment).load(iconUrl).transition(withCrossFade()).apply(options).into(holder.weatherIcon);
 
         long roundedTemp = Math.round(forecast.getTemperature().getDayTemp());
-        holder.temp.setText(String.format(Locale.FRENCH,"%s°C", String.valueOf(roundedTemp)));
+        holder.temp.setValue(String.valueOf(roundedTemp));
         holder.weatherStatus.setText(forecast.getWeathers().get(0).getDescription());
 
         Date date = forecast.getDateObject();
@@ -89,7 +89,7 @@ public class ForecastsRecyclerAdapter extends RecyclerView.Adapter<ForecastsRecy
         ImageView weatherIcon;
 
         @BindView(R.id.temp)
-        TextView temp;
+        TemperatureView temp;
 
         IViewHolderClickHandler handler;
 

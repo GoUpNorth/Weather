@@ -158,7 +158,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
      * IBaseFragment Implementation
      */
     @Override
-    public void onNetworkBack() {
+    public void onNetworkRecover() {
         if (this.forecasts.size() == 0) {
             Log.i(TAG, "Refresh after network loss");
             refreshForecasts();

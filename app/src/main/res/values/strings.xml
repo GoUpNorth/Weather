@@ -42,9 +42,11 @@
     <string name="detail_day_temp">Day:</string>
     <string name="detail_night_temp">Night:</string>
     <string name="detail_unit_celsius">°C</string>
+    <string name="detail_unit_fahrenheit">°F</string>
     <string name="detail_unit_percent">%</string>
     <string name="detail_unit_hpascal">hPa</string>
-    <string name="detail_unit_m_second">m/s</string>
+    <string name="detail_unit_meter_second">m/s</string>
+    <string name="detail_unit_miles_hour">mph</string>
 
     <string name="detail_details_cat">Details:</string>
     <string name="detail_details_humidity">Humidity</string>

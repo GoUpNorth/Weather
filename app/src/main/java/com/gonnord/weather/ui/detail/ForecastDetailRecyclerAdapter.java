@@ -20,6 +20,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.gonnord.weather.R;
 import com.gonnord.weather.model.data.Forecast;
+import com.gonnord.weather.ui.view.SpeedView;
+import com.gonnord.weather.ui.view.TemperatureView;
 import com.gonnord.weather.utils.DateUtils;
 import com.gonnord.weather.utils.Properties;
 import com.gonnord.weather.utils.WindUtils;
@@ -75,10 +77,10 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
         holder.date.setText(dateString);
 
         // Day temp
-        holder.dayTemp.setText(String.valueOf(forecast.getTemperature().getDayTemp()));
+        holder.dayTemp.setValue(String.valueOf(forecast.getTemperature().getDayTemp()));
 
         // Night temp
-        holder.nightTemp.setText(String.valueOf(forecast.getTemperature().getNightTemp()));
+        holder.nightTemp.setValue(String.valueOf(forecast.getTemperature().getNightTemp()));
 
         // Humidity
         holder.humidity.setText(String.valueOf(forecast.getHumidity()));
@@ -93,17 +95,17 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
         initializeTempChart(holder.tempChart);
 
         // Max temp
-        holder.tempMax.setText(String.valueOf(forecast.getTemperature().getMaxTemp()));
+        holder.tempMax.setValue(String.valueOf(forecast.getTemperature().getMaxTemp()));
 
         // Min temp
-        holder.tempMin.setText(String.valueOf(forecast.getTemperature().getMinTemp()));
+        holder.tempMin.setValue(String.valueOf(forecast.getTemperature().getMinTemp()));
 
         // Wind status
         String windStatus = WindUtils.getWindDescriptionBySpeed(fragment.getContext(), forecast.getSpeed());
         holder.windStatus.setText(windStatus);
 
         // Wind speed
-        holder.windSpeed.setText(String.valueOf(forecast.getSpeed()));
+        holder.windSpeed.setValue(String.valueOf(forecast.getSpeed()));
 
         // Wind orientation
         String windOrientation = WindUtils.getWindOrientationByDegree(fragment.getContext(), forecast.getDeg());
@@ -121,10 +123,10 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
         TextView date;
 
         @BindView(R.id.day_temp)
-        TextView dayTemp;
+        TemperatureView dayTemp;
 
         @BindView(R.id.night_temp)
-        TextView nightTemp;
+        TemperatureView nightTemp;
 
         @BindView(R.id.weather_icon)
         ImageView weatherIcon;
@@ -145,16 +147,16 @@ public class ForecastDetailRecyclerAdapter extends RecyclerView.Adapter<Forecast
         BarChart tempChart;
 
         @BindView(R.id.temp_max)
-        TextView tempMax;
+        TemperatureView tempMax;
 
         @BindView(R.id.temp_min)
-        TextView tempMin;
+        TemperatureView tempMin;
 
         @BindView(R.id.wind_status)
         TextView windStatus;
 
         @BindView(R.id.wind_speed)
-        TextView windSpeed;
+        SpeedView windSpeed;
 
         @BindView(R.id.wind_orientation)
         TextView windOrientation;

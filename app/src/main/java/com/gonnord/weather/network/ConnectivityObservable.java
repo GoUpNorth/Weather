@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.Observable;
 
 /**
- * Created by pierre-antoinegonnord on 27/11/2017.
+ * Created by GONNORD_pierreantoine on 27/11/2017.
  */
 
 public class ConnectivityObservable extends Observable {

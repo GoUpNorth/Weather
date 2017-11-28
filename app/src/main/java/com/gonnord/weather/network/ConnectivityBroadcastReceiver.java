@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.util.Log;
 
 /**
- * Created by pierre-antoinegonnord on 06/11/2017.
+ * Created by GONNORD_pierreantoine on 06/11/2017.
  */
 
 public class ConnectivityBroadcastReceiver extends BroadcastReceiver {

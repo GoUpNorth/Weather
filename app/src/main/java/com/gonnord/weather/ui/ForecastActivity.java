@@ -1,11 +1,12 @@
 package com.gonnord.weather.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.gonnord.weather.R;
 import com.gonnord.weather.ui.detail.ForecastDetailFragment;
@@ -21,6 +23,7 @@ import com.gonnord.weather.ui.list.ForecastListFragment;
 import com.gonnord.weather.utils.MeasurementSystem;
 import com.gonnord.weather.utils.NetworkUtils;
 import com.gonnord.weather.utils.PreferencesUtils;
+import com.gonnord.weather.utils.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,10 +58,6 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        Menu menu = navigationView.getMenu();
-        MenuItem menuItem = menu.findItem(R.id.nav_switch);
-        View actionView = MenuItemCompat.getActionView(menuItem);
-        switchCompat = (SwitchCompat) actionView.findViewById(R.id.switch_button);
         initToggleSwitch();
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -112,9 +111,17 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
                 ((ForecastListFragment) fragment).setRequestForecastsCount(14);
                 fragment.refreshForecast();
             }
+        } else if (id == R.id.nav_linkedin) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(Properties.LINKEDIN_URL));
+
+            if(intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -134,6 +141,11 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
 
 
     private void initToggleSwitch() {
+        Menu menu = navigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.nav_switch);
+        View actionView = menuItem.getActionView();
+        switchCompat = actionView.findViewById(R.id.switch_button);
+
         if(switchCompat != null) {
             MeasurementSystem system = PreferencesUtils.getMeasurementSystem(this);
             switchCompat.setChecked(system.getSwitchToggle());
@@ -162,6 +174,4 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
             });
         }
     }
-
-
 }

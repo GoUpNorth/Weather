@@ -204,7 +204,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
             Forecast forecast = forecasts.get(viewHolder.getAdapterPosition());
 
             Bundle args = new Bundle();
-            args.putSerializable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
+            args.putParcelable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
 
             if(fragmentManager != null) {
                 fragmentManager.displayFragment(ForecastDetailFragment.class, args, true, false);

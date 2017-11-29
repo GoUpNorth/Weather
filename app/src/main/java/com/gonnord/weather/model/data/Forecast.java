@@ -1,5 +1,8 @@
 package com.gonnord.weather.model.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -10,7 +13,7 @@ import java.util.List;
  * Created by GONNORD_pierreantoine on 25/11/2017.
  */
 
-public class Forecast implements Serializable {
+public class Forecast implements Parcelable {
 
     @SerializedName("dt")
     long date;
@@ -39,6 +42,31 @@ public class Forecast implements Serializable {
     @SerializedName("rain")
     double rain;
 
+
+    private Forecast(Parcel in) {
+        date = in.readLong();
+        temperature = in.readParcelable(Temperature.class.getClassLoader());
+        pressure = in.readDouble();
+        humidity = in.readInt();
+        weathers = in.createTypedArrayList(Weather.CREATOR);
+        speed = in.readDouble();
+        deg = in.readInt();
+        clouds = in.readInt();
+        rain = in.readDouble();
+    }
+
+    public static final Creator<Forecast> CREATOR = new Creator<Forecast>() {
+        @Override
+        public Forecast createFromParcel(Parcel in) {
+            return new Forecast(in);
+        }
+
+        @Override
+        public Forecast[] newArray(int size) {
+            return new Forecast[size];
+        }
+    };
+
     public long getDate() {
         return date;
     }
@@ -46,7 +74,6 @@ public class Forecast implements Serializable {
     public Date getDateObject() {
         return new Date(date * 1000L);
     }
-
 
     public void setDate(long date) {
         this.date = date;
@@ -114,5 +141,24 @@ public class Forecast implements Serializable {
 
     public void setRain(double rain) {
         this.rain = rain;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(date);
+        dest.writeParcelable(temperature, flags);
+        dest.writeDouble(pressure);
+        dest.writeInt(humidity);
+        dest.writeTypedList(weathers);
+        dest.writeDouble(speed);
+        dest.writeInt(deg);
+        dest.writeInt(clouds);
+        dest.writeDouble(rain);
     }
 }

@@ -59,7 +59,7 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
 
         try {
             Bundle args = this.getArguments();
-            forecast = (Forecast) args.getSerializable(FORECAST_SERIALIZABLE_EXTRA);
+            forecast = args.getParcelable(FORECAST_SERIALIZABLE_EXTRA);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }

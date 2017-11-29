@@ -75,6 +75,8 @@
     <string name="action_two_weeks_title">2 weeks forecast</string>
     <string name="category_measure">System of measurement</string>
     <string name="action_change_measure">Metric / Imperial</string>
+    <string name="category_contact">Contact</string>
+    <string name="action_linkedin">LinkedIn</string>
 
     <string name="snackbar_title_connectivity">No internet connection</string>
 

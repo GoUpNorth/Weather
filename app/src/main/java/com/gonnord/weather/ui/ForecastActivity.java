@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,6 +31,8 @@ import butterknife.ButterKnife;
  */
 
 public class ForecastActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String SAVED_FRAGMENT_EXTRA = "SAVED_FRAGMENT_EXTRA";
 
     SwitchCompat switchCompat;
 
@@ -63,7 +66,13 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        this.displayFragment(ForecastListFragment.class, null, false, false);
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+            Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, SAVED_FRAGMENT_EXTRA);
+            this.displayFragment(fragment, null, false, false);
+        } else {
+            this.displayFragment(ForecastListFragment.class, null, false, false);
+        }
     }
 
 
@@ -163,5 +172,10 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
         }
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Save the fragment's instance
+        getSupportFragmentManager().putFragment(outState, SAVED_FRAGMENT_EXTRA, (Fragment) fragment);
+    }
 }

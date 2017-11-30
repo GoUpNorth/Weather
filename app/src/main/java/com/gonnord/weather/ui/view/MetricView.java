@@ -30,6 +30,8 @@ public abstract class MetricView extends LinearLayout {
 
     private static MeasurementSystem defaultUnit = MeasurementSystem.METRIC;
 
+    private static String defaultValue = "0";
+
     protected TextView valueView;
 
     protected TextView unitView;
@@ -83,17 +85,18 @@ public abstract class MetricView extends LinearLayout {
         int textColor = defaultTextColor;
 
         if(attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ViewAttrs);
-            textSize = a.getDimensionPixelSize(R.styleable.ViewAttrs_textSize, (int) defaultSize);
-            textColor = a.getColor(R.styleable.ViewAttrs_textColor, defaultTextColor);
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MetricView);
+            textSize = a.getDimensionPixelSize(R.styleable.MetricView_textSize, (int) defaultSize);
+            textColor = a.getColor(R.styleable.MetricView_textColor, defaultTextColor);
             a.recycle();
         }
 
         setTextSize(textSize);
         setTextColor(textColor);
 
-        MeasurementSystem system = defaultUnit;
-        setUnit(system);
+        setValue(defaultValue);
+        setUnit(defaultUnit);
+
 
         this.addView(this.valueView);
         this.addView(this.unitView);

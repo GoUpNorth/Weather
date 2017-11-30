@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/summary"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginStart="20dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="5dp">
+    style="@style/AppTheme.ForecastCategory">
 
     <TextView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lundi 11 novembre"
         android:textColor="@android:color/black"
         android:textSize="17sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        tools:text="Lundi 12 novembre"
+        />
 
     <RelativeLayout
         android:layout_marginTop="20dp"
@@ -79,7 +76,7 @@
                 android:id="@+id/weather_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="light rain"
+                tools:text="light rain"
                 android:textSize="30sp" />
         </LinearLayout>
 

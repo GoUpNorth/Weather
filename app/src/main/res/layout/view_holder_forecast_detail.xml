@@ -3,14 +3,28 @@
     android:isScrollContainer="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/light_grey_background"
+    >
 
-    <include layout="@layout/forecast_summary"/>
+    <include layout="@layout/forecast_summary"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
-    <include layout="@layout/forecast_details"/>
+    <include layout="@layout/forecast_details"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
-    <include layout="@layout/forecast_temperatures"/>
+    <include layout="@layout/forecast_temperatures"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
-    <include layout="@layout/forecast_wind"/>
+    <include layout="@layout/forecast_wind"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
 </LinearLayout>

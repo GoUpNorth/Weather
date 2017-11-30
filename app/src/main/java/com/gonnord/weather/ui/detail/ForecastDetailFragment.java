@@ -58,8 +58,12 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
         super.onCreate(savedInstanceState);
 
         try {
-            Bundle args = this.getArguments();
-            forecast = args.getParcelable(FORECAST_SERIALIZABLE_EXTRA);
+            if (savedInstanceState != null && savedInstanceState.containsKey(FORECAST_SERIALIZABLE_EXTRA)) {
+                forecast = (Forecast) savedInstanceState.getSerializable(FORECAST_SERIALIZABLE_EXTRA);
+            } else {
+                Bundle args = this.getArguments();
+                forecast = (Forecast) args.getSerializable(FORECAST_SERIALIZABLE_EXTRA);
+            }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -172,5 +176,14 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
     @Override
     public void clearForecast() {
         forecast = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(forecast != null) {
+            outState.putSerializable(FORECAST_SERIALIZABLE_EXTRA, forecast);
+        }
     }
 }

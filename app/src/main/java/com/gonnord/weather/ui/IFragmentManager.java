@@ -11,6 +11,8 @@ public interface IFragmentManager {
 
     <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack, boolean popBackStack);
 
+    <T extends Fragment> void displayFragment(T fragmentClass, Bundle args, boolean addToBackStack, boolean popBackStack);
+
     void onFragmentStarted(Fragment fragment);
 
     <T extends Fragment> void onFragmentStopped(Class<T> stoppedFragmentClass);

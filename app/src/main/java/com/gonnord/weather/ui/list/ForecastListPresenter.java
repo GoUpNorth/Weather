@@ -42,7 +42,9 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            view.displayForecasts(response.getForecasts());
+                            if(view != null) {
+                                view.displayForecasts(response.getForecasts());
+                            }
                             showProgressBar(false);
                             responsePending = false;
                         }
@@ -54,7 +56,9 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            view.showError(throwable.getMessage());
+                            if(view != null) {
+                                view.showError(throwable.getMessage());
+                            }
                             showProgressBar(false);
                             responsePending = false;
                         }
@@ -66,7 +70,9 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            view.showError(context.getResources().getString(R.string.network_error_message));
+                            if(view != null) {
+                                view.showError(context.getResources().getString(R.string.network_error_message));
+                            }
                             showProgressBar(false);
                             responsePending = false;
                         }
@@ -81,7 +87,9 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
         handler.post(new Runnable() {
             @Override
             public void run() {
-                view.showProgressBar(show);
+                if(view != null) {
+                    view.showProgressBar(show);
+                }
             }
         });
     }

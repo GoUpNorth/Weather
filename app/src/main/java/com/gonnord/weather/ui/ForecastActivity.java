@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.gonnord.weather.R;
 import com.gonnord.weather.ui.detail.ForecastDetailFragment;
@@ -68,9 +67,9 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
         if (savedInstanceState != null) {
             //Restore the fragment's instance
             Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, SAVED_FRAGMENT_EXTRA);
-            this.displayFragment(fragment, null, false, false);
+            this.displayFragment(fragment, null, false);
         } else {
-            this.displayFragment(ForecastListFragment.class, null, false, false);
+            this.displayFragment(ForecastListFragment.class, null, false);
         }
     }
 
@@ -94,7 +93,7 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
 
         if (id == R.id.nav_today) {
             if(!(fragment instanceof ForecastDetailFragment)) {
-                displayFragment(ForecastDetailFragment.class, null, false, true);
+                displayFragment(ForecastDetailFragment.class, null, false);
             } else {
                 fragment.clearForecast();
                 fragment.refreshForecast();
@@ -145,7 +144,7 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
             bundle = new Bundle();
             bundle.putInt(ForecastListFragment.FORECASTS_COUNT_EXTRA, forecastCount);
         }
-        displayFragment(ForecastListFragment.class, bundle, false, true);
+        displayFragment(ForecastListFragment.class, bundle, false);
     }
 
 

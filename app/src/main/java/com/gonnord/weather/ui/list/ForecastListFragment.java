@@ -38,12 +38,16 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
 
     public static final String FORECASTS_COUNT_EXTRA = "FORECASTS_COUNT_EXTRA";
 
+    public static final String FORECAST_LIST_EXTRA = "FORECAST_LIST_EXTRA";
+
+    public static final String MEASUREMENT_SYSTEM_EXTRA = "MEASUREMENT_SYSTEM_EXTRA";
+
     /**
      * Since the ForecastListFragment is put in the back stack, the forecasts data are saved and reinstated when
      * the fragment is popped out of the stack.
      * If the measurement system was changed, the data are invalid and need to be queried.
      */
-    public static final String LAST_MEASURUMENT_SYSTEM_USED = "LAST_MEASURUMENT_SYSTEM_USED";
+    public static final String LAST_MEASUREMENT_SYSTEM_USED = "LAST_MEASUREMENT_SYSTEM_USED";
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -69,12 +73,26 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         super.onCreate(savedInstanceState);
 
         forecasts = new ArrayList<>();
+
+        try {
+            if (savedInstanceState != null) {
+                if(savedInstanceState.containsKey(FORECAST_LIST_EXTRA)) {
+                    forecasts = savedInstanceState.getParcelableArrayList(FORECAST_LIST_EXTRA);
+                }
+                if(savedInstanceState.containsKey(MEASUREMENT_SYSTEM_EXTRA)) {
+                    system = (MeasurementSystem) savedInstanceState.getSerializable(MEASUREMENT_SYSTEM_EXTRA);
+                }
+            }
+
+            if(this.getArguments() != null) {
+                this.setRequestForecastsCount(getArguments().getInt(FORECASTS_COUNT_EXTRA, Properties.DEFAULT_REQUESTED_FORECASTS_COUNT));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+
         adapter = new ForecastsRecyclerAdapter(forecasts, this, new ClickHandler());
         presenter = new ForecastListPresenter(this);
-
-        if(this.getArguments() != null) {
-            this.setRequestForecastsCount(getArguments().getInt(FORECASTS_COUNT_EXTRA, Properties.DEFAULT_REQUESTED_FORECASTS_COUNT));
-        }
     }
 
     @Nullable
@@ -133,21 +151,19 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         super.onDestroyView();
     }
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(LAST_MEASURUMENT_SYSTEM_USED, system.toString());
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MeasurementSystem currentSystem = PreferencesUtils.getMeasurementSystem(getContext());
-
-        if(savedInstanceState != null) {
-            system = MeasurementSystem.valueOf(savedInstanceState.getString(LAST_MEASURUMENT_SYSTEM_USED, currentSystem.toString()));
+        outState.putString(LAST_MEASUREMENT_SYSTEM_USED, system.toString());
+        if(forecasts != null) {
+            outState.putParcelableArrayList(FORECAST_LIST_EXTRA, new ArrayList<>(forecasts));
+        }
+        if(system != null) {
+            outState.putSerializable(MEASUREMENT_SYSTEM_EXTRA, system);
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -162,7 +178,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
      */
     private boolean checkMeasurementSystemHasChanged() {
         MeasurementSystem currentSystem = PreferencesUtils.getMeasurementSystem(getContext());
-         return !this.system.equals(currentSystem);
+        return this.system != null && !this.system.equals(currentSystem);
     }
 
     /**
@@ -207,7 +223,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
             args.putParcelable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
 
             if(fragmentManager != null) {
-                fragmentManager.displayFragment(ForecastDetailFragment.class, args, true, false);
+                fragmentManager.displayFragment(ForecastDetailFragment.class, args, true);
             }
         }
     }

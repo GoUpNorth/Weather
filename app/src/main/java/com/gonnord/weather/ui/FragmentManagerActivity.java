@@ -39,9 +39,9 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack, boolean popBackStack) {
+    public <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack) {
         try {
-            displayFragment(fragmentClass.newInstance(), args, addToBackStack, popBackStack);
+            displayFragment(fragmentClass.newInstance(), args, addToBackStack);
         } catch (InstantiationException e) {
             Log.e(TAG, e.getMessage(), e);
         } catch (IllegalAccessException e) {
@@ -50,10 +50,7 @@ public abstract class FragmentManagerActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public <T extends Fragment> void displayFragment(T fragment, Bundle args, boolean addToBackStack, boolean popBackStack) {
-        if(popBackStack) {
-            popBackStack();
-        }
+    public <T extends Fragment> void displayFragment(T fragment, Bundle args, boolean addToBackStack) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment newFragment = getSupportFragmentManager().findFragmentByTag(

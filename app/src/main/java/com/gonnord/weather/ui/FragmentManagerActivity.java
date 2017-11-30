@@ -81,7 +81,7 @@ public class FragmentManagerActivity extends AppCompatActivity implements IFragm
         fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);
         fragmentTransaction.replace(R.id.fragment_container, newFragment,
-                ForecastListFragment.class.getSimpleName());
+                fragment.getClass().getSimpleName());
         fragmentTransaction.commit();
     }
 

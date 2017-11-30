@@ -40,14 +40,13 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
 
     public static final String FORECAST_LIST_EXTRA = "FORECAST_LIST_EXTRA";
 
-    public static final String MEASUREMENT_SYSTEM_EXTRA = "MEASUREMENT_SYSTEM_EXTRA";
 
     /**
      * Since the ForecastListFragment is put in the back stack, the forecasts data are saved and reinstated when
      * the fragment is popped out of the stack.
      * If the measurement system was changed, the data are invalid and need to be queried.
      */
-    public static final String LAST_MEASUREMENT_SYSTEM_USED = "LAST_MEASUREMENT_SYSTEM_USED";
+    public static final String MEASUREMENT_SYSTEM_EXTRA = "MEASUREMENT_SYSTEM_EXTRA";
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -73,24 +72,6 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         super.onCreate(savedInstanceState);
 
         forecasts = new ArrayList<>();
-
-        try {
-            if (savedInstanceState != null) {
-                if(savedInstanceState.containsKey(FORECAST_LIST_EXTRA)) {
-                    forecasts = savedInstanceState.getParcelableArrayList(FORECAST_LIST_EXTRA);
-                }
-                if(savedInstanceState.containsKey(MEASUREMENT_SYSTEM_EXTRA)) {
-                    system = (MeasurementSystem) savedInstanceState.getSerializable(MEASUREMENT_SYSTEM_EXTRA);
-                }
-            }
-
-            if(this.getArguments() != null) {
-                this.setRequestForecastsCount(getArguments().getInt(FORECASTS_COUNT_EXTRA, Properties.DEFAULT_REQUESTED_FORECASTS_COUNT));
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-
         adapter = new ForecastsRecyclerAdapter(forecasts, this, new ClickHandler());
         presenter = new ForecastListPresenter(this);
     }
@@ -101,6 +82,27 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         View view;
         view = inflater.inflate(R.layout.fragment_forecast_list, container, false);
 
+        Log.i(TAG, "BASE requestForecastsCount: " + requestForecastsCount);
+        Log.i(TAG, "BASE forecasts list size: " + forecasts.size());
+
+
+        if(this.getArguments() != null && this.getArguments().containsKey(FORECASTS_COUNT_EXTRA) && requestForecastsCount < 0) {
+            this.setRequestForecastsCount(getArguments().getInt(FORECASTS_COUNT_EXTRA, Properties.DEFAULT_REQUESTED_FORECASTS_COUNT));
+            Log.i(TAG, "FORECAST_COUNT_EXTRA RECUPERE: " + requestForecastsCount);
+        }
+
+        if (savedInstanceState != null && requestForecastsCount < 0) {
+            if(savedInstanceState.containsKey(FORECAST_LIST_EXTRA)) {
+                forecasts = savedInstanceState.getParcelableArrayList(FORECAST_LIST_EXTRA);
+                requestForecastsCount = forecasts != null ? forecasts.size() : -1;
+                adapter.clear();
+                adapter.addAll(forecasts);
+                Log.i(TAG, "FORECAST_LIST_EXTRA RECUPERE: " + forecasts.size()+" forecasts");
+            }
+            if(savedInstanceState.containsKey(MEASUREMENT_SYSTEM_EXTRA)) {
+                system = (MeasurementSystem) savedInstanceState.getSerializable(MEASUREMENT_SYSTEM_EXTRA);
+            }
+        }
         return view;
     }
 
@@ -127,7 +129,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         });
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary);
 
-        if(forecasts.size() == 0 || checkMeasurementSystemHasChanged()) {
+        if(forecasts.size() == 0 || checkMeasurementSystemHasChanged() || forecasts.size() != requestForecastsCount) {
             refreshForecast();
         }
     }
@@ -155,7 +157,6 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(LAST_MEASUREMENT_SYSTEM_USED, system.toString());
         if(forecasts != null) {
             outState.putParcelableArrayList(FORECAST_LIST_EXTRA, new ArrayList<>(forecasts));
         }
@@ -187,6 +188,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
 
     @Override
     public void displayForecasts(List<Forecast> list) {
+        forecasts = list;
         adapter.clear();
         adapter.addAll(list);
         emptyListMessage.setVisibility(View.GONE);

@@ -6,7 +6,7 @@ package com.gonnord.weather.ui;
 
 public class BasePresenter <View> implements IBasePresenter<View> {
 
-    View view;
+    protected View view;
 
     @Override
     public void onViewActive(View view) {

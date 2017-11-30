@@ -15,7 +15,6 @@ import com.gonnord.weather.ui.BasePresenter;
 
 public class ForecastListPresenter extends BasePresenter<IForecastsListContract.View> implements IForecastsListContract.Presenter {
 
-    private IForecastsListContract.View view;
 
     private ForecastProvider provider;
 
@@ -25,7 +24,7 @@ public class ForecastListPresenter extends BasePresenter<IForecastsListContract.
     private boolean responsePending;
 
     public ForecastListPresenter(IForecastsListContract.View view) {
-        this.view = view;
+        this.onViewActive(view);
         provider = new ForecastProvider();
         handler = new Handler();
         responsePending = false;

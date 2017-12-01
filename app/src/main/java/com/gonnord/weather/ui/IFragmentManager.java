@@ -9,9 +9,7 @@ import android.support.v4.app.Fragment;
 
 public interface IFragmentManager {
 
-    <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack);
-
-    <T extends Fragment> void displayFragment(T fragmentClass, Bundle args, boolean addToBackStack);
+    <T extends Fragment> void displayFragment(Class<T> fragmentClass, Bundle args, boolean addToBackStack, boolean popBackStack);
 
     <T extends Fragment> void displayFragment(T fragmentClass, Bundle args, boolean addToBackStack, boolean popBackStack);
 

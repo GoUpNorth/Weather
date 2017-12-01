@@ -22,4 +22,5 @@ android:
     #- extra-android-m2repository
     #- addon-google_apis-google-19
 
-  script: ./gradlew assembleDebug
+script:
+  - ./gradlew assembleDebug

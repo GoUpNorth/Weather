@@ -1,12 +1,13 @@
 package com.gonnord.weather.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
@@ -22,6 +23,7 @@ import com.gonnord.weather.ui.list.ForecastListFragment;
 import com.gonnord.weather.utils.MeasurementSystem;
 import com.gonnord.weather.utils.NetworkUtils;
 import com.gonnord.weather.utils.PreferencesUtils;
+import com.gonnord.weather.utils.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,10 +60,6 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        Menu menu = navigationView.getMenu();
-        MenuItem menuItem = menu.findItem(R.id.nav_switch);
-        View actionView = MenuItemCompat.getActionView(menuItem);
-        switchCompat = (SwitchCompat) actionView.findViewById(R.id.switch_button);
         initToggleSwitch();
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -101,29 +99,23 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
                 fragment.refreshForecast();
             }
         } else if (id == R.id.nav_five_days) {
-            if(!(fragment instanceof ForecastListFragment)) {
-                displayListFragment(5);
-            } else {
-                ((ForecastListFragment) fragment).setRequestForecastsCount(5);
-                fragment.refreshForecast();
-            }
+            displayListFragment(5);
         } else if (id == R.id.nav_one_week) {
-            if(!(fragment instanceof ForecastListFragment)) {
-                displayListFragment(7);
-            } else {
-                ((ForecastListFragment) fragment).setRequestForecastsCount(7);
-                fragment.refreshForecast();
-            }
+            displayListFragment(7);
+
         } else if (id == R.id.nav_two_weeks) {
-            if(!(fragment instanceof ForecastListFragment)) {
-                displayListFragment(14);
-            } else {
-                ((ForecastListFragment) fragment).setRequestForecastsCount(14);
-                fragment.refreshForecast();
+            displayListFragment(14);
+        } else if (id == R.id.nav_linkedin) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(Properties.LINKEDIN_URL));
+
+            if(intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
             }
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -133,16 +125,31 @@ public class ForecastActivity extends BaseActivity implements NavigationView.OnN
      * @param forecastCount Number of forecasts to be displayed in the list
      */
     private void displayListFragment(int forecastCount) {
-        Bundle bundle = null;
-        if(forecastCount > 0) {
-            bundle = new Bundle();
-            bundle.putInt(ForecastListFragment.FORECASTS_COUNT_EXTRA, forecastCount);
+        if(!(fragment instanceof ForecastListFragment)) {
+            Bundle bundle = null;
+            if(forecastCount > 0) {
+                bundle = new Bundle();
+                bundle.putInt(ForecastListFragment.FORECAST_TAB_COUNT_ARG, forecastCount);
+            }
+            displayFragment(ForecastListFragment.class, bundle, false, true);
+        } else {
+            if(((ForecastListFragment) fragment).getArguments() != null) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(ForecastListFragment.FORECAST_TAB_COUNT_ARG, forecastCount);
+                ((ForecastListFragment) fragment).getArguments().putAll(bundle);
+            }
+            ((ForecastListFragment) fragment).setRequestForecastsCount(forecastCount);
+            fragment.refreshForecast();
         }
-        displayFragment(ForecastListFragment.class, bundle, false, true);
     }
 
 
     private void initToggleSwitch() {
+        Menu menu = navigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.nav_switch);
+        View actionView = menuItem.getActionView();
+        switchCompat = actionView.findViewById(R.id.switch_button);
+
         if(switchCompat != null) {
             MeasurementSystem system = PreferencesUtils.getMeasurementSystem(this);
             switchCompat.setChecked(system.getSwitchToggle());

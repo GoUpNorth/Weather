@@ -36,14 +36,16 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
 
     public static final String TAG = ForecastListFragment.class.getSimpleName();
 
-    public static final String FORECASTS_COUNT_EXTRA = "FORECASTS_COUNT_EXTRA";
+    public static final String FORECAST_LIST_EXTRA = "FORECAST_LIST_EXTRA";
+
+    public static final String FORECAST_TAB_COUNT_ARG = "FORECAST_TAB_COUNT_ARG";
 
     /**
      * Since the ForecastListFragment is put in the back stack, the forecasts data are saved and reinstated when
      * the fragment is popped out of the stack.
      * If the measurement system was changed, the data are invalid and need to be queried.
      */
-    public static final String LAST_MEASURUMENT_SYSTEM_USED = "LAST_MEASURUMENT_SYSTEM_USED";
+    public static final String MEASUREMENT_SYSTEM_EXTRA = "MEASUREMENT_SYSTEM_EXTRA";
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -71,10 +73,6 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         forecasts = new ArrayList<>();
         adapter = new ForecastsRecyclerAdapter(forecasts, this, new ClickHandler());
         presenter = new ForecastListPresenter(this);
-
-        if(this.getArguments() != null) {
-            this.setRequestForecastsCount(getArguments().getInt(FORECASTS_COUNT_EXTRA, Properties.DEFAULT_REQUESTED_FORECASTS_COUNT));
-        }
     }
 
     @Nullable
@@ -83,6 +81,21 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         View view;
         view = inflater.inflate(R.layout.fragment_forecast_list, container, false);
 
+        if(this.getArguments() != null && this.getArguments().getInt(FORECAST_TAB_COUNT_ARG) > 0) {
+            this.setRequestForecastsCount(getArguments().getInt(FORECAST_TAB_COUNT_ARG));
+        }
+
+        if (savedInstanceState != null && requestForecastsCount < 0) {
+            if(savedInstanceState.getParcelableArrayList(FORECAST_LIST_EXTRA) != null) {
+                forecasts = savedInstanceState.getParcelableArrayList(FORECAST_LIST_EXTRA);
+                requestForecastsCount = forecasts.size();
+                adapter.clear();
+                adapter.addAll(forecasts);
+            }
+            if(savedInstanceState.containsKey(MEASUREMENT_SYSTEM_EXTRA)) {
+                system = (MeasurementSystem) savedInstanceState.getSerializable(MEASUREMENT_SYSTEM_EXTRA);
+            }
+        }
         return view;
     }
 
@@ -109,7 +122,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         });
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary);
 
-        if(forecasts.size() == 0 || checkMeasurementSystemHasChanged()) {
+        if(forecasts.size() == 0 || checkMeasurementSystemHasChanged() || forecasts.size() != requestForecastsCount) {
             refreshForecast();
         }
     }
@@ -133,21 +146,18 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
         super.onDestroyView();
     }
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(LAST_MEASURUMENT_SYSTEM_USED, system.toString());
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MeasurementSystem currentSystem = PreferencesUtils.getMeasurementSystem(getContext());
-
-        if(savedInstanceState != null) {
-            system = MeasurementSystem.valueOf(savedInstanceState.getString(LAST_MEASURUMENT_SYSTEM_USED, currentSystem.toString()));
+        if(forecasts != null) {
+            outState.putParcelableArrayList(FORECAST_LIST_EXTRA, new ArrayList<>(forecasts));
+        }
+        if(system != null) {
+            outState.putSerializable(MEASUREMENT_SYSTEM_EXTRA, system);
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -162,7 +172,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
      */
     private boolean checkMeasurementSystemHasChanged() {
         MeasurementSystem currentSystem = PreferencesUtils.getMeasurementSystem(getContext());
-         return !this.system.equals(currentSystem);
+        return this.system != null && !this.system.equals(currentSystem);
     }
 
     /**
@@ -171,6 +181,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
 
     @Override
     public void displayForecasts(List<Forecast> list) {
+        forecasts = list;
         adapter.clear();
         adapter.addAll(list);
         emptyListMessage.setVisibility(View.GONE);
@@ -196,7 +207,6 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
      * End IForecastsListContract.View implementation
      */
 
-
     private class ClickHandler implements ForecastsRecyclerAdapter.ViewHolder.IViewHolderClickHandler {
 
         @Override
@@ -204,10 +214,15 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
             Forecast forecast = forecasts.get(viewHolder.getAdapterPosition());
 
             Bundle args = new Bundle();
-            args.putSerializable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
+            args.putParcelable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
 
             if(fragmentManager != null) {
                 fragmentManager.displayFragment(ForecastDetailFragment.class, args, true, false);
+                if(getArguments() != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(FORECAST_TAB_COUNT_ARG, -1);
+                    getArguments().putAll(bundle);
+                }
             }
         }
     }

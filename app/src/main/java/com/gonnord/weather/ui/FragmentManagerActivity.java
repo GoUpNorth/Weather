@@ -8,13 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.gonnord.weather.R;
-import com.gonnord.weather.ui.list.ForecastListFragment;
 
 /**
  * Created by GONNORD_pierreantoine on 27/11/2017.
  */
 
-public class FragmentManagerActivity extends AppCompatActivity implements IFragmentManager {
+public abstract class FragmentManagerActivity extends AppCompatActivity implements IFragmentManager {
 
     private static final String TAG = FragmentManagerActivity.class.getSimpleName();
 

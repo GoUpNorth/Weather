@@ -14,4 +14,6 @@ public class Properties {
     public static final int DEFAULT_REQUESTED_FORECASTS_COUNT = 5;
 
     public static final String PARIS_TIMEZONE = "GMT+1";
+
+    public static final String LINKEDIN_URL = "https://www.linkedin.com/in/pgonnord/";
 }

@@ -21,7 +21,7 @@ import java.util.Observer;
  * Created by GONNORD_pierreantoine on 27/11/2017.
  */
 
-public class BaseActivity extends FragmentManagerActivity implements Observer {
+public abstract class BaseActivity extends FragmentManagerActivity implements Observer {
 
     public static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -127,8 +127,7 @@ public class BaseActivity extends FragmentManagerActivity implements Observer {
                     runnableStarted = false;
                     return;
                 }
-                // TODO Use an externalized string
-                displaySnackbar("No internet connection", getString(R.string.snackbar_hide_action), Snackbar.LENGTH_INDEFINITE);
+                displaySnackbar(getString(R.string.snackbar_title_connectivity), getString(R.string.snackbar_hide_action), Snackbar.LENGTH_INDEFINITE);
             }
             runnableStarted = false;
         }

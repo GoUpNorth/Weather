@@ -57,25 +57,23 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            if (savedInstanceState != null && savedInstanceState.containsKey(FORECAST_SERIALIZABLE_EXTRA)) {
-                forecast = (Forecast) savedInstanceState.getSerializable(FORECAST_SERIALIZABLE_EXTRA);
-            } else {
-                Bundle args = this.getArguments();
-                forecast = (Forecast) args.getSerializable(FORECAST_SERIALIZABLE_EXTRA);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
         adapter = new ForecastDetailRecyclerAdapter(forecast, this);
-
         presenter = new ForecastListPresenter(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_forecast_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_forecast_detail, container, false);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(FORECAST_SERIALIZABLE_EXTRA)) {
+            forecast = savedInstanceState.getParcelable(FORECAST_SERIALIZABLE_EXTRA);
+            adapter.add(forecast);
+        } else if(getArguments() != null && getArguments().containsKey(FORECAST_SERIALIZABLE_EXTRA)) {
+            forecast = this.getArguments().getParcelable(FORECAST_SERIALIZABLE_EXTRA);
+            adapter.add(forecast);
+        }
+        return view;
     }
 
     @Override
@@ -87,6 +85,7 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
         ButterKnife.bind(this, view);
 
         recycler.setAdapter(adapter);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(linearLayoutManager);
 
@@ -183,7 +182,7 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
         super.onSaveInstanceState(outState);
 
         if(forecast != null) {
-            outState.putSerializable(FORECAST_SERIALIZABLE_EXTRA, forecast);
+            outState.putParcelable(FORECAST_SERIALIZABLE_EXTRA, forecast);
         }
     }
 }

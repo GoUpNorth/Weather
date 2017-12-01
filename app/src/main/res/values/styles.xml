@@ -17,7 +17,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <declare-styleable name="ViewAttrs">
+    <style name="AppTheme.ForecastCategory">
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:background">@drawable/rounded_corners_background</item>
+    </style>
+
+    <declare-styleable name="MetricView">
         <attr name="textSize" format="dimension"/>
         <attr name="textColor" format="color"/>
     </declare-styleable>

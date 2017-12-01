@@ -1,14 +1,18 @@
 package com.gonnord.weather.model.data;
 
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by GONNORD_pierreantoine on 25/11/2017.
  */
 
-public class Temperature implements Serializable{
+public class Temperature implements Parcelable{
+
+    private static final String TAG = Temperature.class.getSimpleName();
 
     @SerializedName("day")
     double dayTemp;
@@ -27,6 +31,27 @@ public class Temperature implements Serializable{
 
     @SerializedName("morn")
     double morningTemp;
+
+    private Temperature(Parcel in) {
+        dayTemp = in.readDouble();
+        minTemp = in.readDouble();
+        maxTemp = in.readDouble();
+        nightTemp = in.readDouble();
+        eveningTemp = in.readDouble();
+        morningTemp = in.readDouble();
+    }
+
+    public static final Creator<Temperature> CREATOR = new Creator<Temperature>() {
+        @Override
+        public Temperature createFromParcel(Parcel in) {
+            return new Temperature(in);
+        }
+
+        @Override
+        public Temperature[] newArray(int size) {
+            return new Temperature[size];
+        }
+    };
 
     public double getDayTemp() {
         return dayTemp;
@@ -74,5 +99,24 @@ public class Temperature implements Serializable{
 
     public void setMorningTemp(double morningTemp) {
         this.morningTemp = morningTemp;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        try {
+            dest.writeDouble(dayTemp);
+            dest.writeDouble(minTemp);
+            dest.writeDouble(maxTemp);
+            dest.writeDouble(nightTemp);
+            dest.writeDouble(eveningTemp);
+            dest.writeDouble(morningTemp);
+        } catch (Exception e) {
+            Log.e(TAG, "Write to parcel failed: "+ e.getMessage(),e);
+        }
     }
 }

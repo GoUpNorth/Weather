@@ -31,4 +31,13 @@
         </menu>
     </item>
 
+    <item android:title="@string/category_contact">
+        <menu>
+            <item
+                android:id="@+id/nav_linkedin"
+                android:icon="@drawable/linkedin_black"
+                android:title="@string/action_linkedin" />
+        </menu>
+    </item>
+
 </menu>

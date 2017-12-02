@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/summary"
     android:orientation="horizontal"
-    android:background="?attr/selectableItemBackground"
-    android:padding="10dp"
-    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="70dp"
+    style="@style/AppTheme.ForecastCategory"
+    android:layout_margin="5dp"
     android:baselineAligned="false">
 
     <LinearLayout
@@ -14,7 +15,7 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".7">
+        android:layout_weight=".6">
 
         <TextView
             android:textSize="14sp"
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="Date"
+            tools:text="Date"
             android:maxLines="1" />
 
         <TextView
@@ -31,22 +32,25 @@
             android:id="@+id/weather_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Weather"
+            tools:text="Weather"
             android:maxLines="1" />
     </LinearLayout>
-
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight=".3">
+        android:layout_weight=".4">
 
         <ImageView
             android:layout_gravity="center"
             android:id="@+id/weather_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/drawable_placeholder"
-            android:adjustViewBounds="true" />
+            tools:src="@drawable/icon"
+            android:layout_toLeftOf="@id/temp"
+            android:layout_toStartOf="@id/temp"
+            android:adjustViewBounds="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp" />
 
         <com.gonnord.weather.ui.view.TemperatureView
             android:id="@+id/temp"
@@ -58,4 +62,5 @@
             app:textColor="@android:color/black"/>
 
     </RelativeLayout>
+
 </LinearLayout>

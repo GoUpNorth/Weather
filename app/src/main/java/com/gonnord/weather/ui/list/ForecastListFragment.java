@@ -3,7 +3,6 @@ package com.gonnord.weather.ui.list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -107,8 +106,10 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
 
         ButterKnife.bind(this, view);
 
+/*
         recycler.addItemDecoration(new DividerItemDecoration(this.getContext(),
                 DividerItemDecoration.VERTICAL));
+*/
         recycler.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -214,7 +215,7 @@ public class ForecastListFragment extends BaseFragment implements IForecastsList
             Forecast forecast = forecasts.get(viewHolder.getAdapterPosition());
 
             Bundle args = new Bundle();
-            args.putParcelable(ForecastDetailFragment.FORECAST_SERIALIZABLE_EXTRA, forecast);
+            args.putParcelable(ForecastDetailFragment.FORECAST_PARCELABLE_EXTRA, forecast);
 
             if(fragmentManager != null) {
                 fragmentManager.displayFragment(ForecastDetailFragment.class, args, true, false);

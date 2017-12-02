@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +18,7 @@ import com.gonnord.weather.ui.list.ForecastListPresenter;
 import com.gonnord.weather.ui.list.IForecastsListContract;
 import com.gonnord.weather.utils.Properties;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -51,7 +47,7 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
 
     IForecastsListContract.Presenter presenter;
 
-    public static final String FORECAST_SERIALIZABLE_EXTRA = "FORECAST_SERIALIZABLE_EXTRA";
+    public static final String FORECAST_PARCELABLE_EXTRA = "FORECAST_PARCELABLE_EXTRA";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,11 +62,11 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forecast_detail, container, false);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(FORECAST_SERIALIZABLE_EXTRA)) {
-            forecast = savedInstanceState.getParcelable(FORECAST_SERIALIZABLE_EXTRA);
+        if (savedInstanceState != null && savedInstanceState.containsKey(FORECAST_PARCELABLE_EXTRA)) {
+            forecast = savedInstanceState.getParcelable(FORECAST_PARCELABLE_EXTRA);
             adapter.add(forecast);
-        } else if(getArguments() != null && getArguments().containsKey(FORECAST_SERIALIZABLE_EXTRA)) {
-            forecast = this.getArguments().getParcelable(FORECAST_SERIALIZABLE_EXTRA);
+        } else if(getArguments() != null && getArguments().containsKey(FORECAST_PARCELABLE_EXTRA)) {
+            forecast = this.getArguments().getParcelable(FORECAST_PARCELABLE_EXTRA);
             adapter.add(forecast);
         }
         return view;
@@ -182,7 +178,7 @@ public class ForecastDetailFragment extends BaseFragment implements IForecastsLi
         super.onSaveInstanceState(outState);
 
         if(forecast != null) {
-            outState.putParcelable(FORECAST_SERIALIZABLE_EXTRA, forecast);
+            outState.putParcelable(FORECAST_PARCELABLE_EXTRA, forecast);
         }
     }
 }

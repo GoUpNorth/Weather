@@ -2,6 +2,7 @@ package com.gonnord.weather.ui.list;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,8 @@ public class ForecastsRecyclerAdapter extends RecyclerView.Adapter<ForecastsRecy
         String iconUrl = String.format(Properties.WEATHER_ICONS_URL, forecast.getWeathers().get(0).getIconId());
         RequestOptions options = new RequestOptions().error(R.drawable.ic_error_black_24dp);
         Glide.with(fragment).load(iconUrl).transition(withCrossFade()).apply(options).into(holder.weatherIcon);
+
+        ViewCompat.setTransitionName(holder.itemView, String.valueOf(forecast.getDate()));
 
         long roundedTemp = Math.round(forecast.getTemperature().getDayTemp());
         holder.temp.setValue(String.valueOf(roundedTemp));

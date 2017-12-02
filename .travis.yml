@@ -1,22 +1,17 @@
 language: android
 jdk: oraclejdk8
 sudo: false
-
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-    - tools
-    - platform-tools
-
-    # The BuildTools version used by your project
-    - build-tools-26.0.2
-
-    # The SDK version used to compile your project
-    - android-26
-
-    # Additional components
-    - extra
-
+  - tools
+  - platform-tools
+  - build-tools-26.0.2
+  - android-26
+  - extra
 script:
-  - ./gradlew assembleDebug
+- "./gradlew assembleDebug"
+
+notifications:
+  email:
+    recipients:
+      - secure: "dYpZWXA4aNMkhenSy5E+ckGDM0TVNr4gghPp+Y6+owcPSDvxpXkWzK/a6R5bmecXnG0bv0AlyfvoWGX1cZyu7MKVtQlAeTuK+T7tZdtwgEhxD9eMuC5VWZThmnx/j8u9FVcALEHoDbg1tf8DUKb0UJZFmxB5aGUo1l9QQTKtz4nPCPIXlE88crZJwdXolF6yfDcDXAM0K9LfTH7gGIxUn2eKKHgnyLt6j55rt5lcszmU/SdqYYllDOHFkxKjNmNSf4WG8wcwsutDGJicm/vkZtAonD0Un/SbO0F/X0LL/fCoFXGoNrjd0MHK2thsTMoWBh3v3m5GQU9FvNGWK1Ckmyx9t4dkKWB9WlmwJHGbnQtE43qopP1xnMXBhlx9NzeXX93FmkMiUNm///dwkP5qtok/NHYa993DRnt0dBBMd9iQnnymnue/er0lECCK5liO7tl/gYiKuH0bTGb+tsbfy4m17shR3yR2INy58jKh4ywoJxsxko4BluCWUMOVt38smEQSAPUuWB21E2Kx7FKUq5qlFtde4eiuGkrAX5G0ug63IarfVFj41zoFSP+/WgJ0htenYqayhYw3agG3C3nSGPNjgXusFy57N/ffWQhCxgVqF82UMuCn4Je1nqA2/2mjALjlQKp5X4bvoPIkvopb26rN30d21P+h8srl8gxfZlI="

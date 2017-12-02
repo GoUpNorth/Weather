@@ -42,29 +42,29 @@ ext {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2", {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:2.2.2", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:appcompat-v7:${androidSupportVersion}"
-    compile "com.android.support:design:${androidSupportVersion}"
-    compile "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
-    testCompile "junit:junit:${junitVersion}"
+    implementation "com.android.support:appcompat-v7:${androidSupportVersion}"
+    implementation "com.android.support:design:${androidSupportVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
+    testImplementation "junit:junit:${junitVersion}"
 
     // ButterKnife
-    compile "com.jakewharton:butterknife:${butterknifeVersion}"
+    implementation "com.jakewharton:butterknife:${butterknifeVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 
     // Okhttp
-    compile "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
 
     // Gson
-    compile "com.google.code.gson:gson:${gsonVersion}"
+    implementation "com.google.code.gson:gson:${gsonVersion}"
 
     // Glide
-    compile "com.github.bumptech.glide:glide:${glideVersion}"
+    implementation "com.github.bumptech.glide:glide:${glideVersion}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
 
     // MPAndroidChart
-    compile "com.github.PhilJay:MPAndroidChart:${mpAndroidChartVersion}"
+    implementation "com.github.PhilJay:MPAndroidChart:${mpAndroidChartVersion}"
 }

@@ -133,6 +133,7 @@ public abstract class BaseActivity extends FragmentManagerActivity implements Ob
         }
     };
 
+    @SuppressWarnings("deprecation")
     protected void displaySnackbar(String text, String action, int length) {
         snackbar = Snackbar.make(getParentView(), text, length);
         snackbar.setAction(action, new View.OnClickListener() {
